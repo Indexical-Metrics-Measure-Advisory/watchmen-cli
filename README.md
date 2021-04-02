@@ -8,21 +8,49 @@
 
 #### init configuration 
 
-- add source
-- add target 
+- add site 
+
+```add_site
+python cli.py add_site source http://localhost:8080/ username password 
+
+```
+
 - search
     - space
-    - connect space 
     - user 
     - user group
-    - pipeline
     - topic 
+  
+```
+python cli.py search topic source query_name
+```
+
+
+- list 
+  - pipeline
+  
+```
+python cli.py list pipeline source 
+```
+  
   
     
 - sync
     - space
-    - connect space 
+      - name 
+    - topic 
+      - name 
     - user 
     - user group
     - pipeline
+      - ids 
+  
+```
+python cli.py sync topic source target ["topic_name"]
+
+python cli.py sync pipeline source target [111]
+```
+  
+
+
 
