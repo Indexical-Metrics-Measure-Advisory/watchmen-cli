@@ -4,7 +4,7 @@ from os import path
 from typing import List
 
 from src.sdk.admin.admin_sdk import search_topics, import_topics, load_topic_list, search_spaces, load_space_list, \
-    import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users
+    import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups
 
 
 class ModelType(Enum):
@@ -51,6 +51,11 @@ class WatchmenCli(object):
         for result in results:
             print("topic name :{} , topic_id :{}".format(result["name"], result["spaceId"]))
         return results
+
+    def __search_user_group(self,site,name):
+        user_groups =  search_user_groups(site,name)
+        for group in user_groups:
+            print("group name :{} . group id :{}".format(group["name"],group["userGroupId"]))
 
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
@@ -112,7 +117,8 @@ class WatchmenCli(object):
         switcher_search = {
             ModelType.TOPIC.value: self.__search_topic,
             ModelType.SPACE.value: self.__search_space,
-            ModelType.USER.value:self.__search_user
+            ModelType.USER.value:self.__search_user,
+            ModelType.USER_GROUP.value:self.__search_user_group
         }
 
         sites = self.__load_site_json()

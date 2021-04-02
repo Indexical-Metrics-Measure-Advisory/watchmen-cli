@@ -81,3 +81,10 @@ def search_users(site,name):
     # print(response.status_code)
     return response.json()
 
+
+def search_user_groups(site,name):
+    headers = build_headers(login(site))
+    response = requests.get(site["host"] + "query/user_group/space?query_name=" + name, headers=headers)
+    # print(response.status_code)
+    return response.json()
+
