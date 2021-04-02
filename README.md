@@ -1,6 +1,11 @@
 
 
 ## installation 
+```
+pip install fire 
+
+pip install requests
+```
 
 
 
