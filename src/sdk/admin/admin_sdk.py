@@ -73,3 +73,11 @@ def import_pipelines(site,pipelines):
                                  headers=headers)
         if response.status_code == 200:
             print("import successfully")
+
+
+def search_users(site,name):
+    headers = build_headers(login(site))
+    response = requests.get(site["host"] + "query/user/group?query_name=" + name, headers=headers)
+    # print(response.status_code)
+    return response.json()
+
