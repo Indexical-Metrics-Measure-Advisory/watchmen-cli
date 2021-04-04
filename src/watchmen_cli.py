@@ -57,6 +57,18 @@ class WatchmenCli(object):
         for group in user_groups:
             print("group name :{} . group id :{}".format(group["name"],group["userGroupId"]))
 
+    def __search_report(self,site,name):
+        pass
+
+    def __search_connect_spac(self,site,name):
+        pass
+
+
+    def __search_subject(self,site,name):
+        pass
+
+    
+
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
             json.dump(data, outfile)
