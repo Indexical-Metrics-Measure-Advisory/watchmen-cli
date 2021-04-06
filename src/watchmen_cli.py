@@ -67,7 +67,7 @@ class WatchmenCli(object):
     def __search_subject(self,site,name):
         pass
 
-    
+
 
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
