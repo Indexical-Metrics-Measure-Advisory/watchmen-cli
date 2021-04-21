@@ -45,6 +45,14 @@ def load_space_list(site,names):
     return response.json()
 
 
+def load_user_groups(site,names):
+    headers = build_headers(login(site))
+    response = requests.post(site["host"] + "user_group/list/name", data=json.dumps(names),
+                             headers=headers)
+
+    return response.json()
+
+
 def import_spaces(site,spaces):
     headers = build_headers(login(site))
     for space in spaces:
@@ -87,4 +95,13 @@ def search_user_groups(site,name):
     response = requests.get(site["host"] + "query/user_group/space?query_name=" + name, headers=headers)
     # print(response.status_code)
     return response.json()
+
+
+def import_user_groups(site,groups):
+    headers = build_headers(login(site))
+    for group in groups:
+        response = requests.post(site["host"] + "import/admin/user/group", data=json.dumps(group),
+                                 headers=headers)
+        if response.status_code == 200:
+            print("import successfully")
 

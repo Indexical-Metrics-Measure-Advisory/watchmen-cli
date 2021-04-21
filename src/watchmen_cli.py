@@ -4,7 +4,8 @@ from os import path
 from typing import List
 
 from src.sdk.admin.admin_sdk import search_topics, import_topics, load_topic_list, search_spaces, load_space_list, \
-    import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups
+    import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups, \
+    import_user_groups, load_user_groups
 
 
 class ModelType(Enum):
@@ -49,7 +50,7 @@ class WatchmenCli(object):
     def __search_space(self, site, name):
         results: List = search_spaces(site, name)
         for result in results:
-            print("topic name :{} , topic_id :{}".format(result["name"], result["spaceId"]))
+            print("space name :{} , space_id :{}".format(result["name"], result["spaceId"]))
         return results
 
     def __search_user_group(self,site,name):
@@ -84,7 +85,10 @@ class WatchmenCli(object):
         import_spaces(target_site, space_list)
 
     def __sync_user_group(self, source_site, target_site, names):
-        pass
+        groups: list = load_user_groups(source_site, names)
+        print("find {} groups".format(len(groups)))
+        import_user_groups(target_site, groups)
+        # pass
 
     def __sync_user(self, source_site, target_site, names):
         pass
