@@ -5,7 +5,7 @@ from typing import List
 
 from src.sdk.admin.admin_sdk import search_topics, import_topics, load_topic_list, search_spaces, load_space_list, \
     import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups, \
-    import_user_groups, load_user_groups
+    import_user_groups, load_user_groups, load_users, import_users
 from src.sdk.utils.file_service import save_to_file, load_from_file
 
 
@@ -112,7 +112,15 @@ class WatchmenCli(object):
 
 
     def __sync_user(self, source_site, target_site, names):
-        pass
+        if source_site != "file":
+            users: list = load_users(source_site, names)
+        else:
+            users: list = load_from_file(source_site, "users")
+        print("find {} users".format(len(users)))
+        if target_site != "file":
+            import_users(target_site, users)
+        else:
+            save_to_file(target_site, users, "users")
 
     def __sync_pipeline(self, source_site, target_site, ids):
         if source_site != "file":

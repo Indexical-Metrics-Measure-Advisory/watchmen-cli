@@ -115,3 +115,19 @@ def import_user_groups(site,groups):
             print("import successfully")
 
 
+def import_users(site,users):
+    headers = build_headers(login(site))
+    for user in users:
+        response = requests.post(site["host"] + "import/admin/user", data=json.dumps(user),
+                                 headers=headers)
+        if response.status_code == 200:
+            print("import successfully")
+
+
+def load_users(site,names):
+    headers = build_headers(login(site))
+    response = requests.post(site["host"] + "user/list/name", data=json.dumps(names),
+                             headers=headers)
+    data = response.json()
+    # print(data)
+    return data
