@@ -30,6 +30,12 @@ def load_topic_list(site,names):
     return response.json()
 
 
+def load_user_list(site,username_list):
+    headers = build_headers(login(site))
+
+
+
+
 def search_spaces(site,name):
     headers = build_headers(login(site))
     response = requests.get(site["host"] + "query/space/group?query_name=" + name, headers=headers)
@@ -50,7 +56,9 @@ def load_user_groups(site,names):
     response = requests.post(site["host"] + "user_group/list/name", data=json.dumps(names),
                              headers=headers)
 
-    return response.json()
+    data = response.json()
+    # print(data)
+    return data
 
 
 def import_spaces(site,spaces):
@@ -100,8 +108,10 @@ def search_user_groups(site,name):
 def import_user_groups(site,groups):
     headers = build_headers(login(site))
     for group in groups:
+        # print(json.dumps(group))
         response = requests.post(site["host"] + "import/admin/user/group", data=json.dumps(group),
                                  headers=headers)
         if response.status_code == 200:
             print("import successfully")
+
 

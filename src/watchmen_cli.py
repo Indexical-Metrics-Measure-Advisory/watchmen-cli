@@ -6,6 +6,7 @@ from typing import List
 from src.sdk.admin.admin_sdk import search_topics, import_topics, load_topic_list, search_spaces, load_space_list, \
     import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups, \
     import_user_groups, load_user_groups
+from src.sdk.utils.file_service import save_to_file, load_from_file
 
 
 class ModelType(Enum):
@@ -64,41 +65,69 @@ class WatchmenCli(object):
     def __search_connect_spac(self,site,name):
         pass
 
-
     def __search_subject(self,site,name):
         pass
-
-
 
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
             json.dump(data, outfile)
 
     def __sync_topic(self, source_site, target_site, names):
-        topic_list: list = load_topic_list(source_site, names)
+        if source_site != "file":
+            topic_list: list = load_topic_list(source_site, names)
+        else:
+            topic_list: list = load_from_file(source_site,"topic")
         print("find {} topic".format(len(topic_list)))
-        import_topics(target_site, topic_list)
+        if target_site != "file":
+            import_topics(target_site, topic_list)
+        else:
+            save_to_file(target_site, topic_list, "topic")
+
 
     def __sync_space(self, source_site, target_site, names):
-        space_list: list = load_space_list(source_site, names)
+        if source_site != "file":
+            space_list: list = load_space_list(source_site, names)
+        else:
+            space_list: list = load_from_file(source_site,"space")
+
         print("find {} space".format(len(space_list)))
-        import_spaces(target_site, space_list)
+        if target_site != "file":
+            import_spaces(target_site, space_list)
+        else:
+            save_to_file(target_site, space_list, "space")
+
+
 
     def __sync_user_group(self, source_site, target_site, names):
-        groups: list = load_user_groups(source_site, names)
+        if source_site != "file":
+            groups: list = load_user_groups(source_site, names)
+        else:
+            groups: list = load_from_file(source_site, "user_groups")
+
         print("find {} groups".format(len(groups)))
-        import_user_groups(target_site, groups)
-        # pass
+        if target_site != "file":
+            import_user_groups(target_site, groups)
+        else:
+            save_to_file(target_site, groups, "user_groups")
+
 
     def __sync_user(self, source_site, target_site, names):
         pass
 
     def __sync_pipeline(self, source_site, target_site, ids):
-        pipeline_list =[]
-        for id in ids:
-            pipeline_list.append(load_pipeline_by_id(source_site,id))
+        if source_site != "file":
+            pipeline_list = []
+            for id in ids:
+                pipeline_list.append(load_pipeline_by_id(source_site, id))
+        else:
+            pipeline_list: list = load_from_file(source_site, "pipeline")
+
         print("find {} pipeline".format(len(pipeline_list)))
-        import_pipelines(target_site,pipeline_list)
+
+        if target_site !="file":
+            import_pipelines(target_site,pipeline_list)
+        else:
+            save_to_file(target_site,pipeline_list,"pipeline")
 
     def __sync_connect_spaces(self, source_site, target_site, ids):
         pass
@@ -171,4 +200,15 @@ class WatchmenCli(object):
 
         }
 
-        switcher_sync.get(model_type.value)(sites[source], sites[target], keys)
+        if target =="file":
+            target_site = "file"
+        else:
+            target_site = sites[target]
+
+        if source == "file":
+            source_site = "file"
+        else:
+            source_site = sites[source]
+
+        switcher_sync.get(model_type.value)(source_site,target_site, keys)
+
