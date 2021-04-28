@@ -1,12 +1,9 @@
 import json
 from enum import Enum
 from os import path
-from typing import List
 
-from src.sdk.admin.admin_sdk import search_topics, import_topics, load_topic_list, search_spaces, load_space_list, \
-    import_spaces, list_all_pipeline, load_pipeline_by_id, import_pipelines, search_users, search_user_groups, \
-    import_user_groups, load_user_groups, load_users, import_users
-from src.sdk.utils.file_service import save_to_file, load_from_file
+from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
+from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
 
 
 class ModelType(Enum):
@@ -36,106 +33,18 @@ class WatchmenCli(object):
         else:
             return data
 
-
-    def __search_user(self,site,name):
-        users = search_users(site,name)
-        for user in users:
-            print("user name :{} user id :{}".format(user["name"],user["userId"]))
-
-    def __search_topic(self, site, name):
-        results: List = search_topics(site, name)
-        for result in results:
-            print("topic name :{} , topic_id :{}".format(result["name"], result["topicId"]))
-        return results
-
-    def __search_space(self, site, name):
-        results: List = search_spaces(site, name)
-        for result in results:
-            print("space name :{} , space_id :{}".format(result["name"], result["spaceId"]))
-        return results
-
-    def __search_user_group(self,site,name):
-        user_groups =  search_user_groups(site,name)
-        for group in user_groups:
-            print("group name :{} . group id :{}".format(group["name"],group["userGroupId"]))
-
-    def __search_report(self,site,name):
+    def __search_report(self, site, name):
         pass
 
-    def __search_connect_spac(self,site,name):
+    def __search_connect_spac(self, site, name):
         pass
 
-    def __search_subject(self,site,name):
+    def __search_subject(self, site, name):
         pass
 
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
             json.dump(data, outfile)
-
-    def __sync_topic(self, source_site, target_site, names):
-        if source_site != "file":
-            topic_list: list = load_topic_list(source_site, names)
-        else:
-            topic_list: list = load_from_file(source_site,"topic")
-        print("find {} topic".format(len(topic_list)))
-        if target_site != "file":
-            import_topics(target_site, topic_list)
-        else:
-            save_to_file(target_site, topic_list, "topic")
-
-
-    def __sync_space(self, source_site, target_site, names):
-        if source_site != "file":
-            space_list: list = load_space_list(source_site, names)
-        else:
-            space_list: list = load_from_file(source_site,"space")
-
-        print("find {} space".format(len(space_list)))
-        if target_site != "file":
-            import_spaces(target_site, space_list)
-        else:
-            save_to_file(target_site, space_list, "space")
-
-
-
-    def __sync_user_group(self, source_site, target_site, names):
-        if source_site != "file":
-            groups: list = load_user_groups(source_site, names)
-        else:
-            groups: list = load_from_file(source_site, "user_groups")
-
-        print("find {} groups".format(len(groups)))
-        if target_site != "file":
-            import_user_groups(target_site, groups)
-        else:
-            save_to_file(target_site, groups, "user_groups")
-
-
-    def __sync_user(self, source_site, target_site, names):
-        if source_site != "file":
-            users: list = load_users(source_site, names)
-        else:
-            users: list = load_from_file(source_site, "users")
-        print("find {} users".format(len(users)))
-        if target_site != "file":
-            import_users(target_site, users)
-        else:
-            save_to_file(target_site, users, "users")
-
-    def __sync_pipeline(self, source_site, target_site, ids):
-        if source_site != "file":
-            pipeline_list = []
-            for id in ids:
-                pipeline_list.append(load_pipeline_by_id(source_site, id))
-        else:
-            pipeline_list: list = load_from_file(source_site, "pipeline")
-
-        print("find {} pipeline".format(len(pipeline_list)))
-
-        if target_site !="file":
-            import_pipelines(target_site,pipeline_list)
-        else:
-            save_to_file(target_site,pipeline_list,"pipeline")
 
     def __sync_connect_spaces(self, source_site, target_site, ids):
         pass
@@ -149,14 +58,8 @@ class WatchmenCli(object):
     def __sync_reports(self, source_site, target_site, ids):
         pass
 
-    def __list_pipeline(self, site):
-        pipeline_list = list_all_pipeline(site)
-        for pipeline in pipeline_list:
-            print("pipeline name :{} , pipeline :{}".format(pipeline["name"], pipeline["pipelineId"]))
-
     def add_site(self, name, host, username=None, password=None):
         """ add_site {site_name} {host_url} {username} {password}
-        
         """
         sites = self.__load_site_json()
         sites[name] = {"host": host, "username": username, "password": password}
@@ -168,10 +71,10 @@ class WatchmenCli(object):
         model_type = ModelType(type)
 
         switcher_search = {
-            ModelType.TOPIC.value: self.__search_topic,
-            ModelType.SPACE.value: self.__search_space,
-            ModelType.USER.value:self.__search_user,
-            ModelType.USER_GROUP.value:self.__search_user_group
+            ModelType.TOPIC.value: search_topic,
+            ModelType.SPACE.value: search_space,
+            ModelType.USER.value: search_user,
+            ModelType.USER_GROUP.value: search_user_group
         }
 
         sites = self.__load_site_json()
@@ -187,7 +90,7 @@ class WatchmenCli(object):
         sites = self.__load_site_json()
 
         switcher_list = {
-            ModelType.PIPELINE.value: self.__list_pipeline
+            ModelType.PIPELINE.value: list_pipeline
         }
 
         switcher_list.get(type)(sites[site])
@@ -197,18 +100,16 @@ class WatchmenCli(object):
                   """
 
         model_type = ModelType(type)
-
         sites = self.__load_site_json()
-
         switcher_sync = {
-            ModelType.TOPIC.value: self.__sync_topic,
-            ModelType.SPACE.value: self.__sync_space,
-            ModelType.USER_GROUP.value: self.__sync_user_group,
-            ModelType.PIPELINE.value:self.__sync_pipeline
-
+            ModelType.TOPIC.value: sync_topic,
+            ModelType.SPACE.value: sync_space,
+            ModelType.USER_GROUP.value: sync_user_group,
+            ModelType.PIPELINE.value: sync_pipeline,
+            ModelType.USER.value: sync_user
         }
 
-        if target =="file":
+        if target == "file":
             target_site = "file"
         else:
             target_site = sites[target]
@@ -218,5 +119,15 @@ class WatchmenCli(object):
         else:
             source_site = sites[source]
 
-        switcher_sync.get(model_type.value)(source_site,target_site, keys)
+        switcher_sync.get(model_type.value)(source_site, target_site, keys)
 
+    def import_data(self, data_list, topic_name):
+        pass
+
+    def generate_raw_topic(self):
+        pass
+
+    def verify_topic(self):
+        ## verify topic number
+
+        pass
