@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def __get_path(site_name,model_name):
     path = "./temp/" + model_name + "/" + site_name
     return path
