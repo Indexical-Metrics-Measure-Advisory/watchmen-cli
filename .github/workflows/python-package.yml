@@ -29,8 +29,10 @@ jobs:
     - name: build exe
       run: |
         pyinstaller cli.py --onefile
+        zip execute.zip  dist -r
     - uses: actions/upload-artifact@v2
       with:
         name: cli-exe
-        path: dist
+        path: execute.zip
+      
  
