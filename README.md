@@ -5,6 +5,7 @@
 pip install fire 
 
 pip install requests
+
 ```
 
 
@@ -15,7 +16,7 @@ pip install requests
 
 - add site 
 
-```add_site
+```buildoutcfg
 python cli.py add_site source http://localhost:8080/ username password 
 
 ```
@@ -26,7 +27,7 @@ python cli.py add_site source http://localhost:8080/ username password
     - user group
     - topic 
   
-```
+```buildoutcfg
 python cli.py search topic source query_name
 ```
 
@@ -34,7 +35,7 @@ python cli.py search topic source query_name
 - list 
   - pipeline
   
-```
+```buildoutcfg
 python cli.py list pipeline source 
 ```
   
@@ -50,12 +51,20 @@ python cli.py list pipeline source
     - pipeline
       - ids 
   
-```
+```buildoutcfg
 python cli.py sync topic source target ["topic_name"]
 
 python cli.py sync pipeline source target [111]
 ```
-  
+
+#### build executable app
+
+```buildoutcfg
+pip install pyinstaller
+
+pyinstaller cli.py
+```
+- run it in ``dist`` folder 
 
 
 
