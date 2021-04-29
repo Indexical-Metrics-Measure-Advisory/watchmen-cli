@@ -27,3 +27,15 @@ def search_user_group(self, site, name):
     user_groups = search_user_groups(site, name)
     for group in user_groups:
         print("group name :{} . group id :{}".format(group["name"], group["userGroupId"]))
+
+
+def __search_report(self, site, name):
+    pass
+
+
+def __search_connect_spac(self, site, name):
+    pass
+
+
+def __search_subject(self, site, name):
+    pass

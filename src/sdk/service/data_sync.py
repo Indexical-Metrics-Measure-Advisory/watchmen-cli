@@ -1,8 +1,9 @@
 from src.sdk.admin.admin_sdk import list_all_pipeline, load_pipeline_by_id, import_pipelines, load_users, import_users, \
     load_user_groups, import_user_groups, load_space_list, import_spaces, load_topic_list, import_topics
+from src.sdk.constants import FILE
 from src.sdk.utils.file_service import load_from_file, save_to_file
 
-FILE = "file"
+
 
 
 def list_pipeline(self, site):
@@ -75,3 +76,19 @@ def sync_topic(self, source_site, target_site, names):
         import_topics(target_site, topic_list)
     else:
         save_to_file(target_site, topic_list, "topic")
+
+
+def __sync_connect_spaces(self, source_site, target_site, ids):
+    pass
+
+
+def __sync_dashboards(self, source_site, target_site, ids):
+    pass
+
+
+def __sync_subjects(self, source_site, target_site, ids):
+    pass
+
+
+def __sync_reports(self, source_site, target_site, ids):
+    pass

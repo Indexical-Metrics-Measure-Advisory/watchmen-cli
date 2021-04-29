@@ -2,8 +2,12 @@ import json
 from enum import Enum
 from os import path
 
+from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
 from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
+
+IMPORT = "import"
+GENERATE = "generate"
 
 
 class ModelType(Enum):
@@ -33,30 +37,9 @@ class WatchmenCli(object):
         else:
             return data
 
-    def __search_report(self, site, name):
-        pass
-
-    def __search_connect_spac(self, site, name):
-        pass
-
-    def __search_subject(self, site, name):
-        pass
-
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
             json.dump(data, outfile)
-
-    def __sync_connect_spaces(self, source_site, target_site, ids):
-        pass
-
-    def __sync_dashboards(self, source_site, target_site, ids):
-        pass
-
-    def __sync_subjects(self, source_site, target_site, ids):
-        pass
-
-    def __sync_reports(self, source_site, target_site, ids):
-        pass
 
     def add_site(self, name, host, username=None, password=None):
         """ add_site {site_name} {host_url} {username} {password}
@@ -95,6 +78,7 @@ class WatchmenCli(object):
 
         switcher_list.get(type)(sites[site])
 
+
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
                   """
@@ -109,25 +93,27 @@ class WatchmenCli(object):
             ModelType.USER.value: sync_user
         }
 
-        if target == "file":
-            target_site = "file"
+        if target == FILE:
+            target_site = FILE
         else:
             target_site = sites[target]
 
-        if source == "file":
-            source_site = "file"
+        if source == FILE:
+            source_site = FILE
         else:
             source_site = sites[source]
 
         switcher_sync.get(model_type.value)(source_site, target_site, keys)
 
-    def import_data(self, data_list, topic_name):
-        pass
+    def raw(self, type, path):
+        if type == GENERATE:
 
-    def generate_raw_topic(self):
-        pass
+            pass
+        elif type == IMPORT:
+            pass
+        else:
+            raise KeyError("type is not supported {0}".format(type))
 
     def verify_topic(self):
         ## verify topic number
-
         pass
