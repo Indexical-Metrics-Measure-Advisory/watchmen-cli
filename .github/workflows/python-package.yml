@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Pack@${{ matrix.os }}&Node${{ matrix.python-version }}
+    name: Pack@${{ matrix.os }}& Python${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
