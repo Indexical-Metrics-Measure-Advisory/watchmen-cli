@@ -107,7 +107,6 @@ class WatchmenCli(object):
 
     def raw(self, type, path):
         if type == GENERATE:
-
             pass
         elif type == IMPORT:
             pass
