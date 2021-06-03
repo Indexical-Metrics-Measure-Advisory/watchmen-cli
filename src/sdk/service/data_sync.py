@@ -6,13 +6,13 @@ from src.sdk.utils.file_service import load_from_file, save_to_file
 
 
 
-def list_pipeline(self, site):
+def list_pipeline( site):
     pipeline_list = list_all_pipeline(site)
     for pipeline in pipeline_list:
         print("pipeline name :{} , pipeline :{}".format(pipeline["name"], pipeline["pipelineId"]))
 
 
-def sync_pipeline(self, source_site, target_site, ids):
+def sync_pipeline( source_site, target_site, ids):
     if source_site != FILE:
         pipeline_list = []
         for id in ids:
@@ -28,7 +28,7 @@ def sync_pipeline(self, source_site, target_site, ids):
         save_to_file(target_site, pipeline_list, "pipeline")
 
 
-def sync_user(self, source_site, target_site, names):
+def sync_user(source_site, target_site, names):
     if source_site != FILE:
         users: list = load_users(source_site, names)
     else:
@@ -40,7 +40,7 @@ def sync_user(self, source_site, target_site, names):
         save_to_file(target_site, users, "users")
 
 
-def sync_user_group(self, source_site, target_site, names):
+def sync_user_group(source_site, target_site, names):
     if source_site != FILE:
         groups: list = load_user_groups(source_site, names)
     else:
@@ -53,7 +53,7 @@ def sync_user_group(self, source_site, target_site, names):
         save_to_file(target_site, groups, "user_groups")
 
 
-def sync_space(self, source_site, target_site, names):
+def sync_space( source_site, target_site, names):
     if source_site != FILE:
         space_list: list = load_space_list(source_site, names)
     else:
@@ -66,7 +66,7 @@ def sync_space(self, source_site, target_site, names):
         save_to_file(target_site, space_list, "space")
 
 
-def sync_topic(self, source_site, target_site, names):
+def sync_topic( source_site, target_site, names):
     if source_site != FILE:
         topic_list: list = load_topic_list(source_site, names)
     else:

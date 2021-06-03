@@ -51,6 +51,8 @@ class WatchmenCli(object):
     def search(self, type, site, name):
         """search topic {site_name} {topic_name}
            """
+
+        print(name)
         model_type = ModelType(type)
 
         switcher_search = {
