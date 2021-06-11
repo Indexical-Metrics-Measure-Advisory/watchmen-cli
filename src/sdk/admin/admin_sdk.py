@@ -34,8 +34,6 @@ def load_user_list(site,username_list):
     headers = build_headers(login(site))
 
 
-
-
 def search_spaces(site,name):
     headers = build_headers(login(site))
     response = requests.get(site["host"] + "query/space/group?query_name=" + name, headers=headers)
