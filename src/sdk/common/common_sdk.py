@@ -19,3 +19,8 @@ def remove_topic_collection(collections):
     response = requests.post("http://localhost:8000/topic/data/remove", data=json.dumps(collections),
                                  headers=headers)
     print(response.status_code)
+
+
+def test_url(url):
+    response = requests.get(url)
+    return response

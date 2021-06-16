@@ -2,6 +2,7 @@ import json
 from enum import Enum
 from os import path
 
+from src.sdk.common.common_sdk import test_url
 from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
 from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
@@ -37,6 +38,11 @@ class WatchmenCli(object):
         else:
             return data
 
+    def __test_url(self, url):
+        response = test_url(url)
+        print(response.status_code)
+        print(response.text)
+
     def __save_to_json(self, data):
         with open('temp/site.json', 'w') as outfile:
             json.dump(data, outfile)
@@ -67,6 +73,10 @@ class WatchmenCli(object):
 
         # print(self.source)
 
+    def test(self, url):
+        self.__test_url(url)
+
+
     def hosts(self):
         print(self.__load_site_json())
 
@@ -79,7 +89,6 @@ class WatchmenCli(object):
         }
 
         switcher_list.get(type)(sites[site])
-
 
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
