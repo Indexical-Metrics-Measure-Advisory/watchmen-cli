@@ -93,7 +93,7 @@ class WatchmenCli(object):
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
                   """
-
+        print(keys)
         model_type = ModelType(type)
         sites = self.__load_site_json()
         switcher_sync = {
@@ -102,6 +102,8 @@ class WatchmenCli(object):
             ModelType.USER_GROUP.value: sync_user_group,
             ModelType.PIPELINE.value: sync_pipeline,
             ModelType.USER.value: sync_user
+
+
         }
 
         if target == FILE:

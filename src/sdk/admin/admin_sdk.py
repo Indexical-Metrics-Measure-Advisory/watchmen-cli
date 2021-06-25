@@ -123,9 +123,11 @@ def import_users(site,users):
 
 
 def load_users(site,names):
+    print(json.dumps(names))
     headers = build_headers(login(site))
     response = requests.post(site["host"] + "user/list/name", data=json.dumps(names),
                              headers=headers)
     data = response.json()
+    # print(response.json())
     # print(data)
     return data
