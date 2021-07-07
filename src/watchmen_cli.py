@@ -173,4 +173,4 @@ class WatchmenCli(object):
                 pipelines = json.load(src)
                 import_pipelines_to_env(token, host, pipelines)
         except Exception as err:
-            print(err)
+            raise err
