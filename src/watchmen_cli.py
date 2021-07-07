@@ -25,19 +25,19 @@ class ModelType(Enum):
     DASHBOARD = "dashboard"
 
 
-def get_access_token(host, port, username, password):
+def get_access_token(host, username, password):
     login_data = {"username": username, "password": password, "grant_type": "password"}
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    response = requests.post(host + ":" + port + "/login/access-token", data=login_data,
+    response = requests.post(host + "/login/access-token", data=login_data,
                              headers=headers)
     token = response.json()["access_token"]
     return token
 
 
-def import_topics_to_env(token, host, port, topics):
+def import_topics_to_env(token, host, topics):
     headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     for topic in topics:
-        response = requests.post(host + ":" + port + "/import/admin/topic", data=json.dumps(topic),
+        response = requests.post(host + "/import/admin/topic", data=json.dumps(topic),
                                  headers=headers)
         if response.status_code == 200:
             print("import topic {0} successfully".format(topic['name']))
@@ -48,7 +48,7 @@ def import_topics_to_env(token, host, port, topics):
 def import_pipelines_to_env(token, host, port, pipelines):
     headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     for pipeline in pipelines:
-        response = requests.post(host + ":" + port + "/import/admin/pipeline", data=json.dumps(pipeline),
+        response = requests.post(host + "/import/admin/pipeline", data=json.dumps(pipeline),
                                  headers=headers)
         if response.status_code == 200:
             print("import topic {0} successfully".format(pipeline['name']))
@@ -161,16 +161,16 @@ class WatchmenCli(object):
         ## verify topic number
         pass
 
-    def deploy(self, path_, host, port, username, password):
+    def deploy(self, path_: str, host: str, username: str, password: str):
         try:
-            token = get_access_token(host, port, username, password)
+            token = get_access_token(host, username, password)
             print("import topics first")
             with open(path_ + "/topic/" + "topic.json", "r") as src:
                 topics = json.load(src)
-                import_topics_to_env(token, host, port, topics)
+                import_topics_to_env(token, host, topics)
             print("import pipelines")
             with open(path_ + "/pipeline/" + "pipeline.json", "r") as src:
                 pipelines = json.load(src)
-                import_pipelines_to_env(token, host, port, pipelines)
+                import_pipelines_to_env(token, host, pipelines)
         except Exception as err:
             print(err)
