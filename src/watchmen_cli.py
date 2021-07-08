@@ -93,7 +93,7 @@ class WatchmenCli(object):
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
                   """
-        print(keys)
+        # print(keys)
         model_type = ModelType(type)
         sites = self.__load_site_json()
         switcher_sync = {
