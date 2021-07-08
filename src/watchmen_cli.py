@@ -45,15 +45,15 @@ def import_topics_to_env(token, host, topics):
             print("import topic {0} failed".format(topic['name']))
 
 
-def import_pipelines_to_env(token, host, port, pipelines):
+def import_pipelines_to_env(token, host, pipelines):
     headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     for pipeline in pipelines:
         response = requests.post(host + "/import/admin/pipeline", data=json.dumps(pipeline),
                                  headers=headers)
         if response.status_code == 200:
-            print("import topic {0} successfully".format(pipeline['name']))
+            print("import pipeline {0} successfully".format(pipeline['name']))
         else:
-            print("import topic {0} failed".format(pipeline['name']))
+            print("import pipeline {0} failed".format(pipeline['name']))
 
 
 class WatchmenCli(object):
@@ -162,12 +162,22 @@ class WatchmenCli(object):
         pass
 
     def deploy(self, path_: str, host: str, username: str, password: str):
+        self.deploy_topics(path_, host, username, password)
+        self.deploy_pipelines(path_, host, username, password)
+
+    def deploy_topics(self, path_: str, host: str, username: str, password: str):
         try:
             token = get_access_token(host, username, password)
             print("import topics first")
             with open(path_ + "/topic/" + "topic.json", "r") as src:
                 topics = json.load(src)
                 import_topics_to_env(token, host, topics)
+        except Exception as err:
+            raise err
+
+    def deploy_pipelines(self, path_: str, host: str, username: str, password: str):
+        try:
+            token = get_access_token(host, username, password)
             print("import pipelines")
             with open(path_ + "/pipeline/" + "pipeline.json", "r") as src:
                 pipelines = json.load(src)
