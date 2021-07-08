@@ -2,6 +2,8 @@ import json
 from enum import Enum
 from os import path
 
+import requests
+
 from src.sdk.common.common_sdk import test_url
 from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
@@ -21,6 +23,37 @@ class ModelType(Enum):
     SUBJECT = "subject"
     REPORT = "report"
     DASHBOARD = "dashboard"
+
+
+def get_access_token(host, username, password):
+    login_data = {"username": username, "password": password, "grant_type": "password"}
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(host + "/login/access-token", data=login_data,
+                             headers=headers)
+    token = response.json()["access_token"]
+    return token
+
+
+def import_topics_to_env(token, host, topics):
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
+    for topic in topics:
+        response = requests.post(host + "/import/admin/topic", data=json.dumps(topic),
+                                 headers=headers)
+        if response.status_code == 200:
+            print("import topic {0} successfully".format(topic['name']))
+        else:
+            print("import topic {0} failed".format(topic['name']))
+
+
+def import_pipelines_to_env(token, host, port, pipelines):
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
+    for pipeline in pipelines:
+        response = requests.post(host + "/import/admin/pipeline", data=json.dumps(pipeline),
+                                 headers=headers)
+        if response.status_code == 200:
+            print("import topic {0} successfully".format(pipeline['name']))
+        else:
+            print("import topic {0} failed".format(pipeline['name']))
 
 
 class WatchmenCli(object):
@@ -76,7 +109,6 @@ class WatchmenCli(object):
     def test(self, url):
         self.__test_url(url)
 
-
     def hosts(self):
         print(self.__load_site_json())
 
@@ -103,7 +135,6 @@ class WatchmenCli(object):
             ModelType.PIPELINE.value: sync_pipeline,
             ModelType.USER.value: sync_user
 
-
         }
 
         if target == FILE:
@@ -129,3 +160,17 @@ class WatchmenCli(object):
     def verify_topic(self):
         ## verify topic number
         pass
+
+    def deploy(self, path_: str, host: str, username: str, password: str):
+        try:
+            token = get_access_token(host, username, password)
+            print("import topics first")
+            with open(path_ + "/topic/" + "topic.json", "r") as src:
+                topics = json.load(src)
+                import_topics_to_env(token, host, topics)
+            print("import pipelines")
+            with open(path_ + "/pipeline/" + "pipeline.json", "r") as src:
+                pipelines = json.load(src)
+                import_pipelines_to_env(token, host, pipelines)
+        except Exception as err:
+            raise err

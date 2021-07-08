@@ -4,15 +4,13 @@ from src.sdk.constants import FILE
 from src.sdk.utils.file_service import load_from_file, save_to_file
 
 
-
-
-def list_pipeline( site):
+def list_pipeline(site):
     pipeline_list = list_all_pipeline(site)
     for pipeline in pipeline_list:
         print("pipeline name :{} , pipeline :{}".format(pipeline["name"], pipeline["pipelineId"]))
 
 
-def sync_pipeline( source_site, target_site, ids):
+def sync_pipeline(source_site, target_site, ids):
     if source_site != FILE:
         pipeline_list = []
         for id in ids:
@@ -53,7 +51,7 @@ def sync_user_group(source_site, target_site, names):
         save_to_file(target_site, groups, "user_groups")
 
 
-def sync_space( source_site, target_site, names):
+def sync_space(source_site, target_site, names):
     if source_site != FILE:
         space_list: list = load_space_list(source_site, names)
     else:
@@ -66,7 +64,7 @@ def sync_space( source_site, target_site, names):
         save_to_file(target_site, space_list, "space")
 
 
-def sync_topic( source_site, target_site, names):
+def sync_topic(source_site, target_site, names):
     if source_site != FILE:
         topic_list: list = load_topic_list(source_site, names)
     else:
