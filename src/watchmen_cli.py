@@ -161,25 +161,25 @@ class WatchmenCli(object):
         ## verify topic number
         pass
 
-    def deploy(self, path_: str, host: str, username: str, password: str):
-        self.deploy_topics(path_, host, username, password)
-        self.deploy_pipelines(path_, host, username, password)
+    def deploy(self, host: str, username: str, password: str):
+        self.deploy_topics(host, username, password)
+        self.deploy_pipelines(host, username, password)
 
-    def deploy_topics(self, path_: str, host: str, username: str, password: str):
+    def deploy_topics(self, host: str, username: str, password: str):
         try:
             token = get_access_token(host, username, password)
             print("import topics first")
-            with open(path_ + "/topic/" + "topic.json", "r") as src:
+            with open("/app/config/topic/" + "topic.json", "r") as src:
                 topics = json.load(src)
                 import_topics_to_env(token, host, topics)
         except Exception as err:
             raise err
 
-    def deploy_pipelines(self, path_: str, host: str, username: str, password: str):
+    def deploy_pipelines(self, host: str, username: str, password: str):
         try:
             token = get_access_token(host, username, password)
             print("import pipelines")
-            with open(path_ + "/pipeline/" + "pipeline.json", "r") as src:
+            with open("/app/config/pipeline/" + "pipeline.json", "r") as src:
                 pipelines = json.load(src)
                 import_pipelines_to_env(token, host, pipelines)
         except Exception as err:
