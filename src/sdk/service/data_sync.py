@@ -7,7 +7,7 @@ from src.sdk.utils.file_service import load_from_file, save_to_file
 def list_pipeline(site):
     pipeline_list = list_all_pipeline(site)
     for pipeline in pipeline_list:
-        print("pipeline name :{} , pipeline :{}".format(pipeline["name"], pipeline["pipelineId"]))
+        print("pipeline name {} , pipeline {}".format(pipeline["name"], pipeline["pipelineId"]))
 
 
 def sync_pipeline(source_site, target_site, ids):

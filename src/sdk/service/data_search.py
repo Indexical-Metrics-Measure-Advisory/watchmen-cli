@@ -6,13 +6,13 @@ from src.sdk.admin.admin_sdk import search_spaces, search_topics, search_users, 
 def search_user(site, name):
     users = search_users(site, name)
     for user in users:
-        print("user name :{} user id :{}".format(user["name"], user["userId"]))
+        print("user name  {} user id :{}".format(user["name"], user["userId"]))
 
 
 def search_topic( site, name):
     results: List = search_topics(site, name)
     for result in results:
-        print("topic name :{} , topic_id :{}".format(result["name"], result["topicId"]))
+        print("topic name  {} , topic_id :{}".format(result["name"], result["topicId"]))
     return results
 
 
@@ -26,7 +26,7 @@ def search_space( site, name):
 def search_user_group( site, name):
     user_groups = search_user_groups(site, name)
     for group in user_groups:
-        print("group name :{} . group id :{}".format(group["name"], group["userGroupId"]))
+        print("group name  {} . group id :{}".format(group["name"], group["userGroupId"]))
 
 
 def __search_report(self, site, name):
