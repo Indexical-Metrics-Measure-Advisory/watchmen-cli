@@ -19,7 +19,7 @@ def search_topic( site, name):
 def search_space( site, name):
     results: List = search_spaces(site, name)
     for result in results:
-        print("space name :{} , space_id :{}".format(result["name"], result["spaceId"]))
+        print("space name {} , space_id :{}".format(result["name"], result["spaceId"]))
     return results
 
 
@@ -29,13 +29,12 @@ def search_user_group( site, name):
         print("group name  {} . group id :{}".format(group["name"], group["userGroupId"]))
 
 
-def __search_report(self, site, name):
+def search_report(self, site, name):
     pass
 
 
-def __search_connect_spac(self, site, name):
+def search_connect_space(self, site, name):
     pass
 
-
-def __search_subject(self, site, name):
+def search_subject(self, site, name):
     pass

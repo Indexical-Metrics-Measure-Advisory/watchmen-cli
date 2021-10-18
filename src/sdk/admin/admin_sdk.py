@@ -9,7 +9,6 @@ from src.sdk.utils.header_utils import build_headers
 def search_topics(site, name):
     headers = build_headers(login(site))
     response = requests.get(site["host"] + "topic/query?query_name=" + name, headers=headers)
-    # print(response.status_code)
     return response.json()
 
 
@@ -20,6 +19,8 @@ def import_topics(site,topics):
                                  headers=headers)
         if response.status_code==200:
             print("import successfully")
+        else:
+            print(response.text)
 
 
 def load_topic_list(site,names):
@@ -87,6 +88,8 @@ def import_pipelines(site,pipelines):
                                  headers=headers)
         if response.status_code == 200:
             print("import successfully")
+        else:
+            print(response.text)
 
 
 def search_users(site,name):

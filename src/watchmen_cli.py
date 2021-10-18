@@ -2,12 +2,14 @@ import json
 from enum import Enum
 from os import path
 
+
 import requests
 
 from src.sdk.common.common_sdk import test_url
 from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
 from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
+from src.sdk.service.markdown_service import import_markdowns
 
 IMPORT = "import"
 GENERATE = "generate"
@@ -54,6 +56,8 @@ def import_pipelines_to_env(token, host, pipelines):
             print("import pipeline {0} successfully".format(pipeline['name']))
         else:
             print("import pipeline {0} failed".format(pipeline['name']))
+
+
 
 
 class WatchmenCli(object):
@@ -103,7 +107,9 @@ class WatchmenCli(object):
         sites = self.__load_site_json()
         switcher_search.get(model_type.value)(sites[site], name)
 
-        # print(self.source)
+    def asset(self,folder,site=None, import_type=None):
+        sites = self.__load_site_json()
+        import_markdowns(folder,sites[site])
 
     def test(self, url):
         self.__test_url(url)
@@ -120,6 +126,8 @@ class WatchmenCli(object):
         }
 
         switcher_list.get(type)(sites[site])
+
+
 
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
@@ -164,6 +172,8 @@ class WatchmenCli(object):
         self.deploy_topics(host, username, password)
         self.deploy_pipelines(host, username, password)
 
+
+
     def deploy_topics(self, host: str, username: str, password: str):
         try:
             token = get_access_token(host, username, password)
@@ -183,3 +193,13 @@ class WatchmenCli(object):
                 import_pipelines_to_env(token, host, pipelines)
         except Exception as err:
             raise err
+
+    def deploy_template(self, host: str, username: str, password: str):
+        ## import template space
+        ## import template subject
+        ## import template chart
+
+        pass
+
+    # def download_assets(self,dataset_id):
+    #     pass
