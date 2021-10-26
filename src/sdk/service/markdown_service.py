@@ -3,6 +3,7 @@ import json
 from os import walk
 
 from src.sdk.admin.admin_sdk import import_pipelines, import_topics
+from src.sdk.metadata.meta_sdk import import_asset
 from src.sdk.utils.array_utils import ArrayUtils
 
 
@@ -20,6 +21,8 @@ def list_asset_markdown(folder):
 def read_data_from_markdown(markdown: str):
     topic_list = []
     pipeline_list = []
+    space_list = []
+    connect_space_list = []
 
     array = ArrayUtils(markdown.split("\n"))
     json_list = array \
@@ -35,13 +38,16 @@ def read_data_from_markdown(markdown: str):
             pipeline_list.append(json_data)
         elif "topicId" in json_data:
             topic_list.append(json_data)
-    return topic_list, pipeline_list
+        elif "spaceId" in json_data:
+            space_list.append(json_data)
+        elif "connectId" in json_data:
+            connect_space_list.append(json_data)
+    return topic_list, pipeline_list,space_list,connect_space_list
 
 
-def import_markdowns(folder,site):
+def import_markdowns(folder,site,import_type):
     markdown_list = list_asset_markdown(folder)
     for markdown in markdown_list:
-        topic_list, pipeline_list = read_data_from_markdown(markdown)
-        import_pipelines(site,pipeline_list)
-        import_topics(site,topic_list)
+        topic_list, pipeline_list,space_list,connect_space_list = read_data_from_markdown(markdown)
+        import_asset(site,{"topics":topic_list,"pipelines":pipeline_list,"importType":import_type})
 

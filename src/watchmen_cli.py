@@ -109,7 +109,7 @@ class WatchmenCli(object):
 
     def asset(self,folder,site=None, import_type=None):
         sites = self.__load_site_json()
-        import_markdowns(folder,sites[site])
+        import_markdowns(folder,sites[site],import_type)
 
     def test(self, url):
         self.__test_url(url)
