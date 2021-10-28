@@ -68,8 +68,8 @@ class WatchmenCli(object):
 
     def __load_site_json(self):
         data = {}
-        if path.exists("temp/site.json"):
-            with open('temp/site.json', 'r') as outfile:
+        if path.exists("site/site.json"):
+            with open('site/site.json', 'r') as outfile:
                 data = json.load(outfile)
                 return data
         else:

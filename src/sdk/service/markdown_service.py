@@ -12,6 +12,7 @@ def list_asset_markdown(folder):
     asset = []
     for file_name in filenames:
         if file_name.endswith(".md"):
+            print(file_name)
             with open(folder + "/" + file_name, encoding="utf-8") as f:
                 data = f.read()
                 asset.append(data)
@@ -38,7 +39,7 @@ def read_data_from_markdown(markdown: str):
             pipeline_list.append(json_data)
         elif "topicId" in json_data:
             topic_list.append(json_data)
-        elif "spaceId" in json_data:
+        elif "spaceId" in json_data and "connectId" not in json_data:
             space_list.append(json_data)
         elif "connectId" in json_data:
             connect_space_list.append(json_data)
@@ -49,5 +50,5 @@ def import_markdowns(folder,site,import_type):
     markdown_list = list_asset_markdown(folder)
     for markdown in markdown_list:
         topic_list, pipeline_list,space_list,connect_space_list = read_data_from_markdown(markdown)
-        import_asset(site,{"topics":topic_list,"pipelines":pipeline_list,"importType":import_type})
+        import_asset(site,{"topics":topic_list,"pipelines":pipeline_list,"spaces":space_list,"connectedSpaces": connect_space_list, "importType":import_type})
 
