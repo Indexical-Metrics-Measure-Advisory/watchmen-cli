@@ -107,9 +107,9 @@ class WatchmenCli(object):
         sites = self.__load_site_json()
         switcher_search.get(model_type.value)(sites[site], name)
 
-    def asset(self,folder,site=None, import_type=None):
+    def asset(self,folder,site=None, import_type=None,markdown_file=None):
         sites = self.__load_site_json()
-        import_markdowns(folder,sites[site],import_type)
+        import_markdowns(folder,sites[site],import_type,markdown_file)
 
     def test(self, url):
         self.__test_url(url)

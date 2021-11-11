@@ -7,15 +7,19 @@ from src.sdk.metadata.meta_sdk import import_asset
 from src.sdk.utils.array_utils import ArrayUtils
 
 
-def list_asset_markdown(folder):
+def list_asset_markdown(folder,markdown_file=None):
     _, _, filenames = next(walk(folder))
     asset = []
     for file_name in filenames:
-        if file_name.endswith(".md"):
-            print(file_name)
+        if markdown_file is not None and file_name == markdown_file:
             with open(folder + "/" + file_name, encoding="utf-8") as f:
                 data = f.read()
                 asset.append(data)
+        else:
+            if file_name.endswith(".md"):
+                with open(folder + "/" + file_name, encoding="utf-8") as f:
+                    data = f.read()
+                    asset.append(data)
     return asset
 
 
@@ -46,7 +50,7 @@ def read_data_from_markdown(markdown: str):
     return topic_list, pipeline_list,space_list,connect_space_list
 
 
-def import_markdowns(folder,site,import_type):
+def import_markdowns(folder,site,import_type,markdown_file):
     markdown_list = list_asset_markdown(folder)
     for markdown in markdown_list:
         topic_list, pipeline_list,space_list,connect_space_list = read_data_from_markdown(markdown)
