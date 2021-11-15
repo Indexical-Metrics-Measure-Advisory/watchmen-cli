@@ -7,7 +7,7 @@ from src.sdk.metadata.meta_sdk import import_asset
 from src.sdk.utils.array_utils import ArrayUtils
 
 
-def list_asset_markdown(folder,markdown_file=None):
+def list_asset_markdown(folder, markdown_file=None):
     _, _, filenames = next(walk(folder))
     asset = []
     for file_name in filenames:
@@ -35,7 +35,7 @@ def read_data_from_markdown(markdown: str):
         .filter(lambda x: x.startswith('<a href="data:application/json;base64,')) \
         .map(lambda x: x.replace('<a href="data:application/json;base64,', '')) \
         .map(lambda x: base64.b64decode(x[0:x.find('"')])) \
-        .map(lambda x: json.loads(x))\
+        .map(lambda x: json.loads(x)) \
         .toList()
 
     for json_data in json_list:
@@ -47,12 +47,12 @@ def read_data_from_markdown(markdown: str):
             space_list.append(json_data)
         elif "connectId" in json_data:
             connect_space_list.append(json_data)
-    return topic_list, pipeline_list,space_list,connect_space_list
+    return topic_list, pipeline_list, space_list, connect_space_list
 
 
-def import_markdowns(folder,site,import_type,markdown_file):
+def import_markdowns(folder, site, import_type, markdown_file):
     markdown_list = list_asset_markdown(folder)
     for markdown in markdown_list:
-        topic_list, pipeline_list,space_list,connect_space_list = read_data_from_markdown(markdown)
-        import_asset(site,{"topics":topic_list,"pipelines":pipeline_list,"spaces":space_list,"connectedSpaces": connect_space_list, "importType":import_type})
-
+        topic_list, pipeline_list, space_list, connect_space_list = read_data_from_markdown(markdown)
+        import_asset(site, {"topics": topic_list, "pipelines": pipeline_list, "spaces": space_list,
+                            "connectedSpaces": connect_space_list, "importType": import_type})

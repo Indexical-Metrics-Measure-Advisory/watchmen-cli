@@ -2,7 +2,6 @@ import json
 from enum import Enum
 from os import path
 
-
 import requests
 
 from src.sdk.common.common_sdk import test_url
@@ -58,8 +57,6 @@ def import_pipelines_to_env(token, host, pipelines):
             print("import pipeline {0} failed".format(pipeline['name']))
 
 
-
-
 class WatchmenCli(object):
     """
     :authors: imma-team
@@ -107,9 +104,9 @@ class WatchmenCli(object):
         sites = self.__load_site_json()
         switcher_search.get(model_type.value)(sites[site], name)
 
-    def asset(self,folder,site=None, import_type=None,markdown_file=None):
+    def asset(self, folder, site=None, import_type=None, markdown_file=None):
         sites = self.__load_site_json()
-        import_markdowns(folder,sites[site],import_type,markdown_file)
+        import_markdowns(folder, sites[site], import_type, markdown_file)
 
     def test(self, url):
         self.__test_url(url)
@@ -126,8 +123,6 @@ class WatchmenCli(object):
         }
 
         switcher_list.get(type)(sites[site])
-
-
 
     def sync(self, type, source, target, keys=[]):
         """sync topic {source_site_name} {target_site_name} {name_list}=["topic_name"]
@@ -171,8 +166,6 @@ class WatchmenCli(object):
     def deploy(self, host: str, username: str, password: str):
         self.deploy_topics(host, username, password)
         self.deploy_pipelines(host, username, password)
-
-
 
     def deploy_topics(self, host: str, username: str, password: str):
         try:
