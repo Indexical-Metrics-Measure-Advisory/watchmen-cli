@@ -3,7 +3,7 @@ import json
 from os import walk
 
 from src.sdk.admin.admin_sdk import import_pipelines, import_topics
-from src.sdk.metadata.meta_sdk import import_asset
+from src.sdk.metadata.meta_sdk import import_asset, import_md_asset
 from src.sdk.utils.array_utils import ArrayUtils
 
 
@@ -56,3 +56,23 @@ def import_markdowns(folder, site, import_type, markdown_file):
         topic_list, pipeline_list, space_list, connect_space_list = read_data_from_markdown(markdown)
         import_asset(site, {"topics": topic_list, "pipelines": pipeline_list, "spaces": space_list,
                             "connectedSpaces": connect_space_list, "importType": import_type})
+
+
+def import_markdowns_v2(host, token, import_type):
+    markdown_list = list_asset_markdown_v2("config")
+    for markdown in markdown_list:
+        topic_list, pipeline_list, space_list, connect_space_list = read_data_from_markdown(markdown)
+        data_ = {"topics": topic_list, "pipelines": pipeline_list, "spaces": space_list,
+                 "connectedSpaces": connect_space_list, "importType": import_type}
+        import_md_asset(host, token, data_)
+
+
+def list_asset_markdown_v2(folder):
+    _, _, filenames = next(walk(folder))
+    asset = []
+    for file_name in filenames:
+        if file_name.endswith(".md"):
+            with open(folder + "/" + file_name, encoding="utf-8") as f:
+                data = f.read()
+                asset.append(data)
+    return asset

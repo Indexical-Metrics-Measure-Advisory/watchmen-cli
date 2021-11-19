@@ -11,7 +11,7 @@ def build_pat_headers(site):
     return headers
 
 
-def import_asset(site,import_asset_request):
+def import_asset(site, import_asset_request):
     # headers =
     response = requests.post(site["host"] + "import", data=json.dumps(import_asset_request),
                              headers=get_http_headers(site))
@@ -29,3 +29,12 @@ def get_http_headers(site):
         # access_token = login(site)
     return headers
 
+
+def import_md_asset(host, token, data):
+    headers = {"Content-Type": "application/json", "Authorization": token}
+    url = host + "/import"
+    response = requests.post(url, data=json.dumps(data), headers=headers)
+    if response.status_code == 200:
+        print(response.json())
+    else:
+        print(response.text)

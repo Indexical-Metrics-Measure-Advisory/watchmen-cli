@@ -8,7 +8,7 @@ from src.sdk.common.common_sdk import test_url
 from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
 from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
-from src.sdk.service.markdown_service import import_markdowns
+from src.sdk.service.markdown_service import import_markdowns, import_markdowns_v2
 
 IMPORT = "import"
 GENERATE = "generate"
@@ -194,5 +194,12 @@ class WatchmenCli(object):
 
         pass
 
-    # def download_assets(self,dataset_id):
-    #     pass
+    def deploy_asset(self, host: str, username: str, password: str):
+        try:
+            token = get_access_token(host, username, password)
+            print("import md asset")
+            print(token)
+            import_markdowns_v2(host, token, "replace")
+        except Exception as err:
+            raise err
+
