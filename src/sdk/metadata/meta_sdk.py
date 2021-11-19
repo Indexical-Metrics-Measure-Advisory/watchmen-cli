@@ -31,7 +31,7 @@ def get_http_headers(site):
 
 
 def import_md_asset(host, token, data):
-    headers = {"Content-Type": "application/json", "Authorization": token}
+    headers = {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     url = host + "/import"
     response = requests.post(url, data=json.dumps(data), headers=headers)
     if response.status_code == 200:
