@@ -25,4 +25,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/indexical-metrics-measure-advisory/watchmen-cli:latest
+          tags: ghcr.io/indexical-metrics-measure-advisory/watchmen-cli:${{ github.event.release.tag_name }}
