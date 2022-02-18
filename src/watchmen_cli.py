@@ -9,9 +9,11 @@ from src.sdk.constants import FILE
 from src.sdk.service.data_search import search_user_group, search_topic, search_space, search_user
 from src.sdk.service.data_sync import list_pipeline, sync_pipeline, sync_user, sync_space, sync_user_group, sync_topic
 from src.sdk.service.markdown_service import import_markdowns, import_markdowns_v2
+from src.sdk.utils.file_service import load_folder, create_folder, load_file_to_json, create_file
 
 IMPORT = "import"
 GENERATE = "generate"
+COMBINE = "combine"
 
 
 class ModelType(Enum):
@@ -152,10 +154,19 @@ class WatchmenCli(object):
         switcher_sync.get(model_type.value)(source_site, target_site, keys)
 
     def raw(self, type, path):
-        if type == GENERATE:
-            pass
-        elif type == IMPORT:
-            pass
+        if type == COMBINE:
+            root_folder = load_folder(path)
+            for folder in root_folder.iterdir():
+                if folder.is_dir():
+                    instance_path = str(folder.resolve())+"_instance"
+                    instance_list = []
+                    create_folder(instance_path)
+                    for p in folder.iterdir():
+                        if p.is_file():
+                           json =  load_file_to_json(p)
+                           instance_list.append(json)
+                    create_file(instance_path,folder.name+"-instance.json",instance_list)
+            print("all instances are created")
         else:
             raise KeyError("type is not supported {0}".format(type))
 
