@@ -1,4 +1,4 @@
-# 🏂🏼 **Cli moved to [watchmen/packages/watchmen-web-client](https://github.com/Indexical-Metrics-Measure-Advisory/watchmen/tree/main/packages/watchmen-cli) from v16.**
+# 🏂🏼 **Cli moved to [watchmen/packages/watchmen-cli](https://github.com/Indexical-Metrics-Measure-Advisory/watchmen/tree/main/packages/watchmen-cli) from v16.**
 
 ## installation 
 ```
